@@ -77,6 +77,9 @@ interface MyCustomObject {
         }
 
         class ToDomainObject : Mapper<DomainObject> {
+            override fun map(id: String): DomainObject {
+                return DomainObject(id, System.currentTimeMillis())
+            }
 
         }
     }
@@ -90,17 +93,10 @@ interface MyCustomObject {
     }
 }
 
-data class DomainObject(private val id: String, time: Long)
+data class DomainObject(private val id: String, private val time: Long)
 
 fun main() {
     val myCustomObject = MyCustomObject.Base("101")
-    myCustomObject.make(MyCustomObject.Mapper.Show())
-//    val datasource = DataSource()
-//    datasource.save("txt", "value")
-//    datasource.save("digit", 15)
-//    val text: String = datasource.read("txt")
-//    val int: Int = datasource.read("digit")
-//    val oneClass = ClassOne("a")
-//    val x: Int = oneClass.show(ClassTwo(1))
-//    val y: Double = oneClass.show(ClassThree())
+    val domainObject = myCustomObject.make(MyCustomObject.Mapper.ToDomainObject())
+    print(domainObject.toString())
 }
