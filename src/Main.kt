@@ -1,37 +1,3 @@
-interface Save<T : Any> {
-    fun save(key: String, value: T)
-}
-
-interface Read {
-    fun <T> read(key: String): T
-}
-
-class SaveInt : Save<Int> {
-    override fun save(key: String, value: Int) {
-        TODO("Not yet implemented")
-    }
-}
-
-class X(private val saveInt: Save<Int>) : Save<String> {
-
-    override fun save(key: String, value: String) {
-        saveInt.save(key, value.length)
-    }
-}
-
-class DataSource : Read, Save<Any> {
-
-    private val map = mutableMapOf<String, Any>()
-
-    override fun save(key: String, value: Any) {
-        map[key] = value
-    }
-
-    override fun <T> read(key: String): T {
-        return map[key] as T
-    }
-}
-
 interface Y<X : Any, B : X> {
     fun show(value: X): B
 }
@@ -97,6 +63,7 @@ data class DomainObject(private val id: String, private val time: Long)
 
 fun main() {
     val myCustomObject = MyCustomObject.Base("101")
+    myCustomObject.make(MyCustomObject.Mapper.Show())
     val domainObject = myCustomObject.make(MyCustomObject.Mapper.ToDomainObject())
     print(domainObject.toString())
 }
